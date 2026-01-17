@@ -1,50 +1,52 @@
-# React + TypeScript + Vite
+# Free Mobility
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A free post-WOD recovery app for foam rolling and lacrosse ball mobility work. Built with React + TypeScript + Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Select macro muscle groups (quads, hamstrings, glutes, etc.)
+- Set priority (High/Medium/Low) for each selected group
+- Choose session duration (5-30 min presets or custom)
+- Algorithm distributes time weighted by priority (High=3x, Medium=2x, Low=1x)
+- Timer with circular progress, auto-advance, pause/resume, skip
+- Dark/light mode support
+- Mobile-first responsive design
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+src/
+├── components/
+│   ├── MuscleGroupSelector.tsx  # Select muscle groups + set priority
+│   ├── SessionTimer.tsx         # Timer with progress ring
+│   └── TimeSelector.tsx         # Choose session duration
+├── data/
+│   └── exercises.ts             # Foam roller/lacrosse ball exercises
+├── utils/
+│   └── sessionBuilder.ts        # Algorithm to allocate time by priority
+├── types.ts                     # TypeScript types
+├── App.tsx                      # Main app with 3 views
+└── *.css                        # Mobile-first styling
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Development
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```bash
+# Install dependencies
+npm install
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+# Run dev server
+npm run dev
+
+# Build for production
+npm run build
 ```
+
+## GitHub Pages Deployment
+
+1. Push this repo to GitHub
+2. Go to Settings → Pages → Source: GitHub Actions
+3. The workflow in `.github/workflows/deploy.yml` will auto-deploy on push to main
+4. Site will be available at: `https://YOUR_USERNAME.github.io/free-mobility/`
+
+Note: If your repo name is different, update the `base` path in `vite.config.ts` to match.

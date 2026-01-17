@@ -1,35 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { MuscleGroupSelection, ScheduledExercise } from './types';
+import { MuscleGroupSelector } from './components/MuscleGroupSelector';
+import { TimeSelector } from './components/TimeSelector';
+import { SessionTimer } from './components/SessionTimer';
+import { buildSession } from './utils/sessionBuilder';
+import './App.css';
+
+type View = 'setup' | 'session' | 'complete';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [view, setView] = useState<View>('setup');
+  const [selections, setSelections] = useState<MuscleGroupSelection[]>([]);
+  const [minutes, setMinutes] = useState(10);
+  const [scheduledExercises, setScheduledExercises] = useState<ScheduledExercise[]>([]);
+
+  const startSession = () => {
+    const exercises = buildSession(selections, minutes * 60);
+    setScheduledExercises(exercises);
+    setView('session');
+  };
+
+  const resetSession = () => {
+    setView('setup');
+    setScheduledExercises([]);
+  };
+
+  const canStart = selections.length > 0;
+
+  if (view === 'session') {
+    return (
+      <div className="app">
+        <SessionTimer
+          exercises={scheduledExercises}
+          onComplete={() => setView('complete')}
+          onBack={resetSession}
+        />
+      </div>
+    );
+  }
+
+  if (view === 'complete') {
+    return (
+      <div className="app">
+        <div className="complete-screen">
+          <h1>Session Complete!</h1>
+          <p>Great work on your mobility session.</p>
+          <button className="primary-btn" onClick={resetSession}>
+            Start New Session
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app">
+      <header className="app-header">
+        <h1>Free Mobility</h1>
+        <p>Post-WOD Recovery</p>
+      </header>
+
+      <main className="app-main">
+        <MuscleGroupSelector
+          selections={selections}
+          onChange={setSelections}
+        />
+
+        <TimeSelector minutes={minutes} onChange={setMinutes} />
+
+        <div className="session-summary">
+          {selections.length > 0 && (
+            <p>
+              {selections.length} muscle group{selections.length !== 1 ? 's' : ''} selected
+              • {minutes} minutes
+            </p>
+          )}
+        </div>
+
+        <button
+          className="primary-btn start-btn"
+          onClick={startSession}
+          disabled={!canStart}
+        >
+          Start Session
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

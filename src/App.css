@@ -1,42 +1,317 @@
-#root {
-  max-width: 1280px;
+.app {
+  max-width: 500px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.app-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #646cff;
+}
+
+.app-header p {
+  margin: 0.25rem 0 0;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* Muscle Group Selector */
+.muscle-group-selector h2,
+.time-selector h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 0;
+}
+
+.muscle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.muscle-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.muscle-card.selected {
+  background: rgba(100, 108, 255, 0.15);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.muscle-toggle {
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.9rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.muscle-card.selected .muscle-toggle {
+  font-weight: 600;
+}
+
+.priority-selector {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.priority-btn {
+  flex: 1;
+  padding: 0.4rem;
+  font-size: 0.7rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.priority-btn.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.priority-btn.priority-1.active {
+  background: rgba(255, 100, 100, 0.3);
+}
+
+.priority-btn.priority-2.active {
+  background: rgba(255, 200, 100, 0.3);
+}
+
+.priority-btn.priority-3.active {
+  background: rgba(100, 200, 100, 0.3);
+}
+
+/* Time Selector */
+.time-selector {
+  margin-bottom: 1.5rem;
+}
+
+.time-presets {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.time-btn {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.time-btn.active {
+  background: #646cff;
+  color: white;
+}
+
+.time-custom {
+  font-size: 0.85rem;
+}
+
+.time-custom input {
+  width: 3rem;
+  padding: 0.3rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: inherit;
+}
+
+/* Session Summary */
+.session-summary {
+  text-align: center;
+  margin-bottom: 1rem;
+  min-height: 1.5rem;
+}
+
+.session-summary p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Buttons */
+.primary-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #646cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary-btn:hover:not(:disabled) {
+  background: #535bf2;
+}
+
+/* Session Timer */
+.session-timer {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem);
+}
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.back-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.exercise-counter {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.exercise-display {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.exercise-display h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.exercise-description {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.exercise-type {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.timer-display {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.progress-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.progress-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+  stroke: #646cff;
+  transition: stroke-dasharray 0.3s;
+}
+
+.time-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.control-btn {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.control-btn.start {
+  background: #646cff;
+  color: white;
+}
+
+.control-btn.pause {
+  background: rgba(255, 200, 100, 0.3);
+}
+
+.control-btn.nav {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Complete Screen */
+.complete-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 2rem);
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.complete-screen h1 {
+  font-size: 2rem;
+  color: #4ade80;
+  margin-bottom: 0.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.complete-screen p {
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 400px) {
+  .muscle-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
