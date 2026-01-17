@@ -5,14 +5,21 @@ interface Props {
   onChange: (selections: MuscleGroupSelection[]) => void;
 }
 
-const ALL_MUSCLE_GROUPS: MuscleGroup[] = [
+const LOWER_BODY: MuscleGroup[] = [
   'quads',
   'hamstrings',
   'glutes',
+  'adductors',
   'calves',
+  'tibialis',
   'hip_flexors',
   'lower_back',
+  'feet',
+];
+
+const UPPER_BODY: MuscleGroup[] = [
   'upper_back',
+  'traps',
   'lats',
   'chest',
   'shoulders',
@@ -44,46 +51,54 @@ export function MuscleGroupSelector({ selections, onChange }: Props) {
     );
   };
 
+  const renderMuscleGroup = (mg: MuscleGroup) => {
+    const selected = isSelected(mg);
+    const selection = getSelection(mg);
+
+    return (
+      <div
+        key={mg}
+        className={`muscle-card ${selected ? 'selected' : ''}`}
+      >
+        <button
+          className="muscle-toggle"
+          onClick={() => toggleMuscleGroup(mg)}
+        >
+          {MUSCLE_GROUP_LABELS[mg]}
+        </button>
+
+        {selected && (
+          <div className="priority-selector">
+            {([1, 2, 3] as Priority[]).map((p) => (
+              <button
+                key={p}
+                className={`priority-btn priority-${p} ${
+                  selection?.priority === p ? 'active' : ''
+                }`}
+                onClick={() => setPriority(mg, p)}
+              >
+                {PRIORITY_LABELS[p]}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="muscle-group-selector">
       <h2>Select Muscle Groups</h2>
       <p className="subtitle">Tap to select, then set priority</p>
 
+      <h3 className="body-section-header">Lower Body</h3>
       <div className="muscle-grid">
-        {ALL_MUSCLE_GROUPS.map((mg) => {
-          const selected = isSelected(mg);
-          const selection = getSelection(mg);
+        {LOWER_BODY.map(renderMuscleGroup)}
+      </div>
 
-          return (
-            <div
-              key={mg}
-              className={`muscle-card ${selected ? 'selected' : ''}`}
-            >
-              <button
-                className="muscle-toggle"
-                onClick={() => toggleMuscleGroup(mg)}
-              >
-                {MUSCLE_GROUP_LABELS[mg]}
-              </button>
-
-              {selected && (
-                <div className="priority-selector">
-                  {([1, 2, 3] as Priority[]).map((p) => (
-                    <button
-                      key={p}
-                      className={`priority-btn priority-${p} ${
-                        selection?.priority === p ? 'active' : ''
-                      }`}
-                      onClick={() => setPriority(mg, p)}
-                    >
-                      {PRIORITY_LABELS[p]}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <h3 className="body-section-header">Upper Body</h3>
+      <div className="muscle-grid">
+        {UPPER_BODY.map(renderMuscleGroup)}
       </div>
     </div>
   );

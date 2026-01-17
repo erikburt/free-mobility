@@ -82,12 +82,24 @@ export function SessionTimer({ exercises, onComplete, onBack }: Props) {
       </div>
 
       <div className="exercise-display">
+        {currentExercise.side && (
+          <div className={`side-indicator side-${currentExercise.side}`}>
+            {currentExercise.side === 'left' ? '← LEFT SIDE' : 'RIGHT SIDE →'}
+          </div>
+        )}
         <h2>{currentExercise.exercise.name}</h2>
         <p className="exercise-description">
           {currentExercise.exercise.description}
         </p>
         <div className="exercise-type">
-          {currentExercise.exercise.type === 'foam_roller' ? '🧘 Foam Roller' : '🎾 Lacrosse Ball'}
+          {currentExercise.exercise.type === 'foam_roller' && '🧘 Foam Roller'}
+          {currentExercise.exercise.type === 'lacrosse_ball' && '🎾 Lacrosse Ball'}
+          {currentExercise.exercise.type === 'barbell' && '🏋️ Barbell'}
+          {currentExercise.side && (
+            <span className="side-note">
+              {currentExercise.side === 'left' ? ' • Right side next' : ' • Last side'}
+            </span>
+          )}
         </div>
       </div>
 
