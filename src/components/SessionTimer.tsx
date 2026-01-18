@@ -43,9 +43,8 @@ async function initAudio(): Promise<void> {
     source.start(0);
 
     audioUnlocked = true;
-    console.log('Audio unlocked, state:', ctx.state);
-  } catch (e) {
-    console.error('Failed to init audio:', e);
+  } catch {
+    // Audio init failed, will retry on playBeep
   }
 }
 
@@ -63,7 +62,6 @@ function playBeep(frequency = 800, duration = 150, count = 1, volume = 0.3) {
 
   // Don't play if context isn't running
   if (ctx.state !== 'running') {
-    console.log('Audio context not running:', ctx.state);
     return;
   }
 
@@ -84,8 +82,8 @@ function playBeep(frequency = 800, duration = 150, count = 1, volume = 0.3) {
 
       oscillator.start(startTime);
       oscillator.stop(startTime + duration / 1000);
-    } catch (e) {
-      console.error('Error playing tone:', e);
+    } catch {
+      // Tone playback failed
     }
   };
 

@@ -1,52 +1,33 @@
 # Free Mobility
 
-A free post-WOD recovery app for foam rolling and lacrosse ball mobility work. Built with React + TypeScript + Vite.
+A free post-WOD mobility and recovery app. Select your muscle groups, pick exercises, and follow along with a guided timer.
 
 ## Features
 
-- Select macro muscle groups (quads, hamstrings, glutes, etc.)
-- Set priority (High/Medium/Low) for each selected group
-- Choose session duration (5-30 min presets or custom)
-- Algorithm distributes time weighted by priority (High=3x, Medium=2x, Low=1x)
-- Timer with circular progress, auto-advance, pause/resume, skip
-- Dark/light mode support
-- Mobile-first responsive design
+- **Muscle Group Selection**: Choose from upper and lower body muscle groups with priority levels (High/Med/Low)
+- **Exercise Selection**: Pick from foam roller, lacrosse ball, and barbell mobility exercises
+- **Guided Timer**: Circular progress timer with automatic transitions between exercises
+- **Unilateral Support**: Exercises that need both sides automatically prompt for left/right
+- **Audio Cues**: Beeps for side switches, exercise changes, and countdown warnings
+- **Session Overview**: See total time and equipment needed before starting
+- **Mobile-First**: Designed for use on your phone at the gym
 
-## Project Structure
+## Usage
 
-```
-src/
-├── components/
-│   ├── MuscleGroupSelector.tsx  # Select muscle groups + set priority
-│   ├── SessionTimer.tsx         # Timer with progress ring
-│   └── TimeSelector.tsx         # Choose session duration
-├── data/
-│   └── exercises.ts             # Foam roller/lacrosse ball exercises
-├── utils/
-│   └── sessionBuilder.ts        # Algorithm to allocate time by priority
-├── types.ts                     # TypeScript types
-├── App.tsx                      # Main app with 3 views
-└── *.css                        # Mobile-first styling
-```
+1. Select the muscle groups you want to work on
+2. Set priority (High/Med/Low) for each - higher priority groups get auto-selected first
+3. Choose which specific exercises to include
+4. Set time per exercise (30s to 3min per side)
+5. Start the session and follow the timer
+
+## Live Demo
+
+Visit: https://erikburt.github.io/free-mobility/
 
 ## Development
 
-```bash
-# Install dependencies
-npm install
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for setup and contribution info.
 
-# Run dev server
-npm run dev
+## License
 
-# Build for production
-npm run build
-```
-
-## GitHub Pages Deployment
-
-1. Push this repo to GitHub
-2. Go to Settings → Pages → Source: GitHub Actions
-3. The workflow in `.github/workflows/deploy.yml` will auto-deploy on push to main
-4. Site will be available at: `https://erikburt.github.io/free-mobility/`
-
-Note: If your repo name is different, update the `base` path in `vite.config.ts` to match.
+MIT
