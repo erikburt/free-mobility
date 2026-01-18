@@ -47,6 +47,6 @@ npm run build
 1. Push this repo to GitHub
 2. Go to Settings → Pages → Source: GitHub Actions
 3. The workflow in `.github/workflows/deploy.yml` will auto-deploy on push to main
-4. Site will be available at: `https://YOUR_USERNAME.github.io/free-mobility/`
+4. Site will be available at: `https://erikburt.github.io/free-mobility/`
 
 Note: If your repo name is different, update the `base` path in `vite.config.ts` to match.
