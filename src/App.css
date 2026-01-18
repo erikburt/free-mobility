@@ -311,24 +311,38 @@
 
 .exercise-display {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+  width: 100%;
 }
 
 .exercise-display h2 {
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem;
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
 }
 
 .exercise-description {
-  font-size: 0.95rem;
+  font-size: 1rem;
   opacity: 0.8;
   line-height: 1.5;
+  max-width: 100%;
 }
 
 .exercise-type {
   margin-top: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   opacity: 0.6;
+}
+
+.up-next {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  display: inline-block;
 }
 
 .timer-display {
@@ -588,4 +602,247 @@
   .muscle-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* Input Mode Toggle */
+.input-mode-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.mode-btn.active {
+  background: rgba(100, 108, 255, 0.3);
+  opacity: 1;
+}
+
+.mode-btn:hover:not(.active) {
+  opacity: 0.8;
+}
+
+/* Workout Exercise Selector */
+.workout-exercise-selector h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.workout-search {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.workout-search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: inherit;
+}
+
+.workout-search-input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.workout-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.workout-search-clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.workout-search-clear:hover {
+  opacity: 1;
+}
+
+.workout-category-section {
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.workout-category-section.collapsed {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.workout-category-section.expanded {
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 1rem;
+}
+
+.workout-category-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.workout-category-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.workout-exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.workout-exercise-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+}
+
+.workout-exercise-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.workout-exercise-option.selected {
+  background: rgba(100, 108, 255, 0.15);
+  border-color: rgba(100, 108, 255, 0.4);
+}
+
+.workout-exercise-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.workout-exercise-option.selected .workout-exercise-checkbox {
+  background: #646cff;
+  border-color: #646cff;
+  color: white;
+}
+
+.workout-exercise-name {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.workout-exercise-muscles {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  text-transform: capitalize;
+}
+
+.workout-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.no-results {
+  text-align: center;
+  opacity: 0.5;
+  padding: 2rem;
+}
+
+.workout-selection-summary {
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(100, 108, 255, 0.1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Derived Muscle Groups Preview */
+.derived-muscle-groups {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.derived-muscle-groups h3 {
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem;
+  opacity: 0.7;
+}
+
+.derived-groups-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.derived-group-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.derived-group-chip .priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.derived-group-chip .priority-dot.priority-1 {
+  background: #ff6b6b;
+}
+
+.derived-group-chip .priority-dot.priority-2 {
+  background: #ffc864;
+}
+
+.derived-group-chip .priority-dot.priority-3 {
+  background: #64c864;
 }

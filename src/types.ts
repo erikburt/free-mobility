@@ -34,6 +34,7 @@ export interface Exercise {
   description: string;
   defaultDuration: number; // seconds per side (for unilateral) or total (for bilateral)
   isUnilateral: boolean; // true if exercise should be done on each side separately
+  order?: number; // lower = selected first for auto-selection (default: 0)
 }
 
 export type Side = 'left' | 'right' | null; // null for bilateral exercises
@@ -74,3 +75,13 @@ export const PRIORITY_LABELS: Record<Priority, string> = {
   2: 'Med',
   3: 'Low',
 };
+
+// Workout exercises (exercises performed during the workout, not mobility exercises)
+export interface WorkoutExercise {
+  id: string;
+  name: string;
+  muscleGroups: { muscleGroup: MuscleGroup; priority: Priority }[];
+  category: 'compound' | 'cardio' | 'olympic' | 'gymnastics';
+}
+
+export type InputMode = 'exercises' | 'muscle_groups';

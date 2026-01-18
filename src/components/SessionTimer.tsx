@@ -118,6 +118,17 @@ export function SessionTimer({ exercises, onComplete, onBack }: Props) {
   const isSwitchingSides = nextExercise &&
     currentExercise?.exercise.id === nextExercise.exercise.id;
 
+  // Find the next different exercise (skip the other side of current exercise)
+  const getNextDifferentExercise = () => {
+    for (let i = currentIndex + 1; i < exercises.length; i++) {
+      if (exercises[i].exercise.id !== currentExercise?.exercise.id) {
+        return exercises[i];
+      }
+    }
+    return null;
+  };
+  const nextDifferentExercise = getNextDifferentExercise();
+
   // Calculate total remaining time in session
   const calculateRemainingSessionTime = useCallback(() => {
     let remaining = timeRemaining;
@@ -282,12 +293,16 @@ export function SessionTimer({ exercises, onComplete, onBack }: Props) {
               {currentExercise.exercise.type === 'foam_roller' && 'Foam Roller'}
               {currentExercise.exercise.type === 'lacrosse_ball' && 'Lacrosse Ball'}
               {currentExercise.exercise.type === 'barbell' && 'Barbell'}
-              {currentExercise.side && (
-                <span className="side-note">
-                  {currentExercise.side === 'left' ? ' • Right side next' : ' • Last side'}
-                </span>
-              )}
             </div>
+            {isStarted && !isLastExercise && (
+              <div className="up-next">
+                {isSwitchingSides ? (
+                  <>Up next: Right side</>
+                ) : nextDifferentExercise ? (
+                  <>Up next: {nextDifferentExercise.exercise.name}</>
+                ) : null}
+              </div>
+            )}
           </>
         )}
       </div>

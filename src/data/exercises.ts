@@ -152,6 +152,7 @@ export const EXERCISES: Exercise[] = [
     description: 'Position the foam roller on a specific tight spot in the lower back. Lean to one side, apply pressure and make small movements.',
     defaultDuration: 60,
     isUnilateral: true,
+    order: -1,
   },
   {
     id: 'super-lower-back',
@@ -336,5 +337,7 @@ export const EXERCISES: Exercise[] = [
 ];
 
 export function getExercisesForMuscleGroup(muscleGroup: MuscleGroup): Exercise[] {
-  return EXERCISES.filter((e) => e.muscleGroup === muscleGroup);
+  return EXERCISES
+    .filter((e) => e.muscleGroup === muscleGroup)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
