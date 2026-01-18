@@ -10,11 +10,13 @@ interface Props {
 
 // Singleton AudioContext for iOS Safari compatibility
 let audioContext: AudioContext | null = null;
+let audioUnlocked = false;
 
 function getAudioContext(): AudioContext | null {
   if (!audioContext) {
     try {
-      audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      audioContext = new AudioContextClass();
     } catch {
       return null;
     }
@@ -23,14 +25,28 @@ function getAudioContext(): AudioContext | null {
 }
 
 // Must be called from a user gesture (click/tap) to enable audio on iOS
-function initAudio(): Promise<void> {
+async function initAudio(): Promise<void> {
   const ctx = getAudioContext();
-  if (!ctx) return Promise.resolve();
+  if (!ctx || audioUnlocked) return;
 
-  if (ctx.state === 'suspended') {
-    return ctx.resume();
+  try {
+    // Resume if suspended
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
+
+    // Play a silent buffer to fully unlock audio on iOS
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+
+    audioUnlocked = true;
+    console.log('Audio unlocked, state:', ctx.state);
+  } catch (e) {
+    console.error('Failed to init audio:', e);
   }
-  return Promise.resolve();
 }
 
 // Simple beep sound generator using Web Audio API
@@ -40,26 +56,37 @@ function playBeep(frequency = 800, duration = 150, count = 1, volume = 0.3) {
   const ctx = getAudioContext();
   if (!ctx) return;
 
-  // Resume context if suspended (needed for iOS)
+  // Try to resume if suspended
   if (ctx.state === 'suspended') {
-    ctx.resume();
+    ctx.resume().catch(() => {});
+  }
+
+  // Don't play if context isn't running
+  if (ctx.state !== 'running') {
+    console.log('Audio context not running:', ctx.state);
+    return;
   }
 
   const playTone = (delay: number) => {
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
+    try {
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
 
-    oscillator.frequency.value = frequency;
-    oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
 
-    gainNode.gain.setValueAtTime(volume, ctx.currentTime + delay);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + duration / 1000);
+      const startTime = ctx.currentTime + delay;
+      gainNode.gain.setValueAtTime(volume, startTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration / 1000);
 
-    oscillator.start(ctx.currentTime + delay);
-    oscillator.stop(ctx.currentTime + delay + duration / 1000);
+      oscillator.start(startTime);
+      oscillator.stop(startTime + duration / 1000);
+    } catch (e) {
+      console.error('Error playing tone:', e);
+    }
   };
 
   for (let i = 0; i < count; i++) {
@@ -299,8 +326,9 @@ export function SessionTimer({ exercises, onComplete, onBack }: Props) {
         {!isStarted ? (
           <button
             className="control-btn start"
-            onClick={() => {
-              initAudio(); // Initialize audio on user gesture for iOS
+            onClick={async () => {
+              await initAudio(); // Initialize audio on user gesture for iOS
+              playBeep(600, 100, 1, volume); // Test beep to confirm audio works
               setIsStarted(true);
             }}
           >
