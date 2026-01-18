@@ -8,35 +8,62 @@ interface Props {
   onBack: () => void;
 }
 
+// Singleton AudioContext for iOS Safari compatibility
+let audioContext: AudioContext | null = null;
+
+function getAudioContext(): AudioContext | null {
+  if (!audioContext) {
+    try {
+      audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    } catch {
+      return null;
+    }
+  }
+  return audioContext;
+}
+
+// Must be called from a user gesture (click/tap) to enable audio on iOS
+function initAudio(): Promise<void> {
+  const ctx = getAudioContext();
+  if (!ctx) return Promise.resolve();
+
+  if (ctx.state === 'suspended') {
+    return ctx.resume();
+  }
+  return Promise.resolve();
+}
+
 // Simple beep sound generator using Web Audio API
 function playBeep(frequency = 800, duration = 150, count = 1, volume = 0.3) {
   if (volume === 0) return;
 
-  try {
-    const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+  const ctx = getAudioContext();
+  if (!ctx) return;
 
-    const playTone = (delay: number) => {
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+  // Resume context if suspended (needed for iOS)
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
 
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+  const playTone = (delay: number) => {
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
 
-      oscillator.frequency.value = frequency;
-      oscillator.type = 'sine';
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
 
-      gainNode.gain.setValueAtTime(volume, audioContext.currentTime + delay);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + delay + duration / 1000);
+    oscillator.frequency.value = frequency;
+    oscillator.type = 'sine';
 
-      oscillator.start(audioContext.currentTime + delay);
-      oscillator.stop(audioContext.currentTime + delay + duration / 1000);
-    };
+    gainNode.gain.setValueAtTime(volume, ctx.currentTime + delay);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + duration / 1000);
 
-    for (let i = 0; i < count; i++) {
-      playTone(i * 0.2);
-    }
-  } catch {
-    // Audio not supported
+    oscillator.start(ctx.currentTime + delay);
+    oscillator.stop(ctx.currentTime + delay + duration / 1000);
+  };
+
+  for (let i = 0; i < count; i++) {
+    playTone(i * 0.2);
   }
 }
 
@@ -270,7 +297,13 @@ export function SessionTimer({ exercises, onComplete, onBack }: Props) {
 
       <div className="timer-controls">
         {!isStarted ? (
-          <button className="control-btn start" onClick={() => setIsStarted(true)}>
+          <button
+            className="control-btn start"
+            onClick={() => {
+              initAudio(); // Initialize audio on user gesture for iOS
+              setIsStarted(true);
+            }}
+          >
             Start
           </button>
         ) : isTransitioning ? (
