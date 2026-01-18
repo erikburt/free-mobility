@@ -71,6 +71,6 @@ export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
 
 export const PRIORITY_LABELS: Record<Priority, string> = {
   1: 'High',
-  2: 'Medium',
+  2: 'Med',
   3: 'Low',
 };

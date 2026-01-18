@@ -82,13 +82,14 @@
 
 .priority-btn {
   flex: 1;
-  padding: 0.4rem;
-  font-size: 0.7rem;
+  padding: 0.3rem 0.2rem;
+  font-size: 0.65rem;
   background: transparent;
   border: none;
   color: inherit;
   opacity: 0.5;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .priority-btn.active {
@@ -167,6 +168,26 @@
   color: #646cff;
 }
 
+/* Equipment Needed */
+.equipment-needed {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.equipment-label {
+  opacity: 0.7;
+}
+
+.equipment-list {
+  font-weight: 500;
+}
+
 /* Exercise Checkbox */
 .exercise-checkbox {
   font-size: 1.1rem;
@@ -234,6 +255,60 @@
   opacity: 0.7;
 }
 
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.volume-icon {
+  font-size: 0.9rem;
+}
+
+.volume-slider {
+  width: 60px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #646cff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #646cff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.session-remaining {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.transition-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
 .exercise-display {
   text-align: center;
   margin-bottom: 2rem;
@@ -281,6 +356,10 @@
 .progress-bar {
   stroke: #646cff;
   transition: stroke-dasharray 0.3s;
+}
+
+.progress-bar.transition {
+  stroke: #fbbf24;
 }
 
 .time-text {

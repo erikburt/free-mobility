@@ -81,6 +81,21 @@ export function ExerciseSelector({
   const totalMins = Math.floor(totalSeconds / 60);
   const totalSecs = totalSeconds % 60;
 
+  // Calculate equipment needed
+  const equipmentNeeded = new Set<string>();
+  for (const exerciseId of selectedExercises) {
+    const item = allExercises.find((e) => e.exercise.id === exerciseId);
+    if (item) {
+      equipmentNeeded.add(item.exercise.type);
+    }
+  }
+
+  const EQUIPMENT_LABELS: Record<string, string> = {
+    foam_roller: 'Foam Roller',
+    lacrosse_ball: 'Lacrosse Ball',
+    barbell: 'Barbell',
+  };
+
   return (
     <div className="exercise-selector">
       <div className="selector-header">
@@ -170,6 +185,15 @@ export function ExerciseSelector({
           {totalMins > 0 ? `${totalMins}m ` : ''}{totalSecs > 0 ? `${totalSecs}s` : totalMins > 0 ? '' : '0s'}
         </span>
       </div>
+
+      {equipmentNeeded.size > 0 && (
+        <div className="equipment-needed">
+          <span className="equipment-label">Equipment:</span>
+          <span className="equipment-list">
+            {Array.from(equipmentNeeded).map((type) => EQUIPMENT_LABELS[type] || type).join(', ')}
+          </span>
+        </div>
+      )}
 
       <button
         className="primary-btn"
